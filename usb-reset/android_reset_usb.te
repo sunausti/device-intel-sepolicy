@@ -1,0 +1,37 @@
+# Rules for android_reset_usb script
+type android_reset_usb, domain;
+type android_reset_usb_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(android_reset_usb)
+
+allow android_reset_usb proc_cmdline:file r_file_perms;
+allow android_reset_usb proc:file rw_file_perms;
+allow android_reset_usb proc:file {getattr};
+allow android_reset_usb sysfs:dir r_dir_perms;
+allow android_reset_usb sysfs:file rw_file_perms;
+#allow android_reset_usb sysfs:file {getattr open write};
+allow android_reset_usb sysfs_net:dir r_dir_perms;
+allow android_reset_usb sysfs_net:file rw_file_perms;
+allow android_reset_usb sysfs_net:file {getattr};
+allow android_reset_usb sysfs_app_readable:file rw_file_perms;
+allow android_reset_usb sysfs_app_readable:dir r_dir_perms;
+allow android_reset_usb sysfs_app_readable:file {getattr};
+allow android_reset_usb sysfs_gfx:file {getattr};
+
+allow android_reset_usb dbc_sysfs:file {getattr};
+allow android_reset_usb dbc_sysfs:dir r_dir_perms;
+allow android_reset_usb dbc_sysfs:file rw_file_perms;
+
+allow android_reset_usb sysfs_virtio:file rw_file_perms;
+
+allow android_reset_usb vendor_file:file rx_file_perms;
+allow android_reset_usb proc_cpuinfo:file r_file_perms;
+allow android_reset_usb vendor_toolbox_exec:file execute_no_trans;
+
+not_full_treble(`
+  allow android_reset_usb system_file:file rx_file_perms;
+  allow android_reset_usb shell_exec:file rx_file_perms;
+')
+full_treble_only(`
+  allow android_reset_usb vendor_shell_exec:file rx_file_perms;
+  allow android_reset_usb vendor_toolbox_exec:file rx_file_perms;
+')

@@ -1,0 +1,1 @@
+allow shell android_reset_usb_exec:file getattr;
